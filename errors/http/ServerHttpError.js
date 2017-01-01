@@ -1,10 +1,7 @@
-var HttpError = require('./HttpError');
+const HttpError = require('../HttpError');
 
-class ServerHttpError extends HttpError
-{
-    constructor(message = '') {
-        super(500, message);
-    }
-}
-
-module.exports = ServerHttpError;
+module.exports = HttpError.extends({
+    name: 'ServerHttpError',
+    message: 'Internal server error',
+    status: 500
+});

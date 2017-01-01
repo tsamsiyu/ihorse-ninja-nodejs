@@ -1,10 +1,7 @@
-var HttpError = require('./HttpError');
+const HttpError = require('../HttpError');
 
-class NotFoundHttpError extends HttpError
-{
-    constructor(message = '') {
-        super(404, message);
-    }
-}
-
-module.exports = NotFoundHttpError;
+module.exports = HttpError.extends({
+    name: 'NotFoundHttpError',
+    message: 'Page not found',
+    status: 404
+});

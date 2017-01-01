@@ -1,18 +1,8 @@
+const error = require('./index');
 
-class BaseError extends Error
-{
-    constructor(message) {
-        super(message);
-        this.setMessage(message || 'Undefined error');
-        this.name = this.constructor.name;
-        Error.captureStackTrace(this, this.constructor);
-    }
-
-    setMessage(message) {
-        if (typeof message === 'string') {
-            this._message = message;
-        }
-    }
-}
-
-module.exports = BaseError;
+module.exports = error({
+    name: 'BaseError',
+    message: 'Undefined error'
+}, function(message) {
+    this.setIfPresent('message', message);
+});
