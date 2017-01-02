@@ -6,6 +6,8 @@ module.exports = function (app) {
     if (error) {
       app.get('logger').error("Can't connect to mongodb");
       throw error;
+    } else {
+      app.get('logger').info(`Connected to mongodb on address: '${mongooseConfig.uri}'`);
     }
   });
 };

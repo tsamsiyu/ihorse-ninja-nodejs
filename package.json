@@ -19,6 +19,7 @@
     "mongoose": "^4.7.5",
     "mongoose-class-wrapper": "^0.8.1",
     "nconf": "^0.8.4",
+    "stack-trace": "0.0.9",
     "underscore.string": "^3.3.4",
     "validate": "^3.0.1",
     "validate.js": "^0.10.0",
