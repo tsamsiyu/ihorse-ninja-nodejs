@@ -1,12 +1,12 @@
-// var crypto = require('crypto');
-// var mongoose = require('mongoose');
-// var userValidators = require('../../validators/user').validators;
-// var Profile = require('./profile').Profile;
-// var validate = require('../../libs/validate');
+// const crypto = require('crypto');
+// const mongoose = require('mongoose');
+// const userValidators = require('../../validators/user').validators;
+// const Profile = require('./Profile').Profile;
+// const validate = require('../../libs/validate');
 //
-// var Schema = mongoose.Schema;
+// const Schema = mongoose.Schema;
 //
-// var schema = new Schema({
+// const schema = new Schema({
 //     login: {
 //         type: String
 //     },
