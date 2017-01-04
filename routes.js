@@ -1,7 +1,13 @@
+const router = require('routing/router')();
+
 module.exports = function(app) {
-  app.routing((router) => {
-    router.namespace('v1', (v1) => {
-      v1.resources('users');
+  router.namespace('v1', (v1) => {
+    v1.resources('users');
+
+    v1.get('echo', (req, res) => {
+      res.end('echo');
     });
   });
+
+  app.use(router);
 };

@@ -1,60 +1,68 @@
-const express = require('express');
-const expressRouter = express.Router();
+let ExpressRouter = require('express').Router;
+const util = require('util');
+const methods = require('methods');
 const _ = require('lodash');
 
-class Router {
-  constructor(parent) {
-    this.resourcesOption = [];
-    this.namespaceOption = [];
-    _.assignIn(this, parent);
-  }
-  namespace(value, cb) {
-    const router = new Router(this);
-    router.namespaceOption.push(value);
-    if (typeof cb == 'function') cb(router);
-    return this;
-  }
-  resources(name, cb) {
-    const router = new Router(this);
-    router.resourcesOption.push(name);
-    router.apply();
-    if (typeof cb == 'function') cb(router);
-    return this;
-  }
-  controllerClass() {
-    if (!this._controller) {
-      const resource = this.resourcesOption.slice(-1, 1).pop();
-      this._controller = require(`controllers/${resource}Controller`);
-    }
-    return this._controller;
-  }
-  action(name) {
-    return (req, res) => {
-      const controllerClass = this.controllerClass();
-      const controller = new controllerClass();
-      controller.runAction(name, req, res);
-    }
-  }
-  apply() {
-    let path = this.namespaceOption;
-    this.resourcesOption.forEach((parentResource) => { // TODO: need to add trim
-        path.push(parentResource);
-        path.push(':' + _.singularize(parentResource) + 'Id');
-    });
-    const lastPathItem = path.pop();
-    const listPath = '/' + path.join('/');
-    const memberPath = listPath + '/' + lastPathItem;
-    expressRouter.get(listPath, this.action('list'));
-    expressRouter.get(memberPath, this.action('item'));
-    expressRouter.post(listPath, this.action('create'));
-    expressRouter.patch(memberPath, this.action('update'));
-    expressRouter.delete(memberPath, this.action('delete'));
-    expressRouter.options(listPath, this.action('options'));
-    expressRouter.options(memberPath, this.action('options'));
-  }
-  getMap() {
-    return expressRouter;
-  }
-}
 
-module.exports = Router;
+ExpressRouter.namespaceOption = [];
+ExpressRouter.resourcesOption = [];
+
+ExpressRouter.namespace = function (value, cb) {
+  this.namespaceOption.push(_.trim(value, '/'));
+  cb(this);
+  this.namespaceOption = [];
+};
+
+methods.concat('all').forEach(function (method) {
+  const oldMethodHandler = ExpressRouter[method];
+  ExpressRouter[method] = function () {
+    if (this.namespaceOption.length) {
+      arguments[0] = '/' + this.namespaceOption.join('/') + '/' + _.trimStart(arguments[0], '/');
+    }
+    oldMethodHandler.apply(this, arguments);
+  };
+});
+
+ExpressRouter.resources = function (name, cb) {
+  this.resourcesOption.push(name);
+  this.addResourceRouter();
+  cb && cb(this);
+  this.resourcesOption = [];
+};
+
+ExpressRouter.controllerClass = function() {
+  if (!this._controller) {
+    const resource = this.resourcesOption.slice(-1, 1).pop();
+    this._controller = require(`controllers/${resource}Controller`);
+  }
+  return this._controller;
+};
+
+ExpressRouter.action = function(name) {
+  const controllerClass = this.controllerClass();
+  return (req, res, next) => {
+    const controller = new controllerClass();
+    controller.runAction(name, req, res, next);
+  }
+};
+
+ExpressRouter.addResourceRouter = function () {
+  let uri = [];
+  this.resourcesOption.forEach((parentResource) => {
+    uri.push(_.trim(parentResource, '/'));
+    uri.push(':' + _.singularize(parentResource) + 'Id');
+  });
+  const lastPathItem = uri.pop();
+  const listPath = '/' + uri.join('/');
+  const memberPath = listPath + '/' + lastPathItem;
+
+  this.get(listPath, this.action('list'));
+  this.get(memberPath, this.action('item'));
+  this.post(listPath, this.action('create'));
+  this.patch(memberPath, this.action('update'));
+  this.delete(memberPath, this.action('delete'));
+  this.options(listPath, this.action('options'));
+  this.options(memberPath, this.action('options'));
+};
+
+module.exports = ExpressRouter;

@@ -1,18 +1,19 @@
 const NotFoundHttpError = require('errors/http/NotFoundHttpError');
 
 class Controller {
-  runAction(name, req, res) {
+  runAction(name, req, res, next) {
     const action = this[name];
     if (typeof action === 'function') {
-      action.call(this, req, res);
+      action.call(this, req, res, next);
     } else {
-      this.actionMissing(req, res);
+      this.actionMissing(req, res, next);
     }
   }
-  actionMissing(req, res) {
+  actionMissing(req, res, next) {
+    console.log('missing');
     throw new NotFoundHttpError;
   }
-  options(req, res) {
+  options(req, res, next) {
     res.end();
   }
 }

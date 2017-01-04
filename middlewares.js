@@ -10,8 +10,4 @@ module.exports = function (app) {
   app.use(authMiddleware);
   app.use(responseMiddleware);
   app.use(errorMiddleware);
-
-  app.get('/echo', (req, res) => {
-    res.end('echo');
-  });
 };
