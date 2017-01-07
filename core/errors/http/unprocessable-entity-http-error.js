@@ -1,4 +1,4 @@
-const HttpError = require('errors/HttpError');
+const HttpError = require('errors/http-error');
 
 module.exports = HttpError.extends({
   name: 'UnprocessableEntityHttpError',

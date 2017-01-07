@@ -1,3 +1,3 @@
 module.exports = function () {
-  require('./fsPatch')();
+  require('./fs-patch')();
 };

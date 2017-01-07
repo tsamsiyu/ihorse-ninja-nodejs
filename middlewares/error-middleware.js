@@ -1,6 +1,6 @@
-const NotFoundHttpError = require('errors/http/NotFoundHttpError');
-const ServerHttpError = require('errors/http/ServerHttpError');
-const HttpError = require('errors/HttpError');
+const NotFoundHttpError = require('errors/http/not-found-http-error');
+const ServerHttpError = require('errors/http/server-http-error');
+const HttpError = require('errors/http-error');
 
 module.exports = function (err, req, res, next) {
   if (!err) {

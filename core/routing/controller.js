@@ -1,4 +1,4 @@
-const NotFoundHttpError = require('errors/http/NotFoundHttpError');
+const NotFoundHttpError = require('errors/http/not-found-http-error');
 
 class Controller {
   runAction(name, req, res, next) {

@@ -33,7 +33,7 @@ ExpressRouter.resources = function (name, cb) {
 ExpressRouter.controllerClass = function() {
   if (!this._controller) {
     const resource = this.resourcesOption.slice(-1, 1).pop();
-    this._controller = require(`controllers/${resource}Controller`);
+    this._controller = require(`controllers/${resource}-controller`);
   }
   return this._controller;
 };

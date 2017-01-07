@@ -1,4 +1,4 @@
-const BaseError = require('errors/BaseError');
+const BaseError = require('errors/base-error');
 
 module.exports = BaseError.extends({
   name: 'HttpError',

@@ -1,8 +1,8 @@
-const corsMiddleware = require('middlewares/corsMiddleware');
-const authMiddleware = require('middlewares/authMiddleware');
-const requestMiddleware = require('middlewares/requestMiddleware');
-const responseMiddleware = require('middlewares/responseMiddleware');
-const errorMiddleware = require('middlewares/errorMiddleware');
+const corsMiddleware = require('middlewares/cors-middleware');
+const authMiddleware = require('middlewares/auth-middleware');
+const requestMiddleware = require('middlewares/request-middleware');
+const responseMiddleware = require('middlewares/response-middleware');
+const errorMiddleware = require('middlewares/error-middleware');
 
 module.exports = function (app) {
   app.use(corsMiddleware);

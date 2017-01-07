@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
+// TODO: remake to use like mixin
 module.exports = function () {
   fs.walkDeepThroughDir = function (folderPath, cb, async = true) {
     const scanner = async ? fs.readdir : fs.readdirSync;
