@@ -10,7 +10,6 @@ class Controller {
     }
   }
   actionMissing(req, res, next) {
-    console.log('missing');
     throw new NotFoundHttpError;
   }
   options(req, res, next) {
